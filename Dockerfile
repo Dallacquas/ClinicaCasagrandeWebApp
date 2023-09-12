@@ -6,4 +6,4 @@ RUN npm run build --prod
 #stage 2
 
 FROM nginx:alpine
-COPY --from=node /app/dist/ClinicaApp /usr/share/nginx/html
+COPY --from=node /app/dist/clinica /usr/share/nginx/html
