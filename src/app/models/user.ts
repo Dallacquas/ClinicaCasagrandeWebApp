@@ -7,7 +7,4 @@ export class User {
   email?: string;
   area?: string;
   perfil?: Role;
-
-
-
 }

@@ -1,5 +1,15 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { HeaderService } from '../../sharepage/navbar/header.service';
+import { ProtclinComponent } from 'src/app/pages/protclin/protclin.component';
+import { LoginComponent } from 'src/app/pages/login/login.component';
+import { Subscription } from 'rxjs';
+import { TableData } from 'src/app/models/Tables/TableData';
+import { Colaborador } from 'src/app/models/Colaboradors';
+import { ColaboradorService } from 'src/app/services/colaborador/colaborador.service';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { ProntuarioService } from 'src/app/services/prontuario/prontuario.service';
+import { UserService } from 'src/app/services';
+import { Prontuario } from 'src/app/models/Prontuarios';
 
 @Component({
   selector: 'app-bloco-notas',
@@ -9,6 +19,24 @@ import { HeaderService } from '../../sharepage/navbar/header.service';
 export class BlocoNotasComponent {
   text: string = '';
   processedText: string = '';
+  @Output() onSubmit = new EventEmitter<string>();
+
+  //==================================================================
+  @ViewChild(LoginComponent) login!: LoginComponent;
+
+  texto: string = '';
+  linkA!: string;
+  private subscription!: Subscription;
+  nCliente!: number;
+  Atual!: TableData;
+  public Ficha:string = 'FICHA';
+  public NomeCliente: string = '';
+  public MostraInfo: boolean = true;
+  public idFoto: string = '';
+  public User!:Colaborador;
+  public nUser!: number;
+  public UserAll!: any;
+//===================================================================
 
   highlightLinks() {
     // RegEx para detectar links ou arquivos
@@ -20,6 +48,12 @@ export class BlocoNotasComponent {
     }
 
     this.processedText = this.text;
+}
+
+Enviar(){
+  let texto = this.processedText;
+  // texto = texto.replace(/\r\n|\n/g, '<br><br>')
+  this.Insere(texto.toString());
 }
 
 onKeydown(event: KeyboardEvent): void {
@@ -35,9 +69,74 @@ onKeydown(event: KeyboardEvent): void {
       target.selectionStart = target.selectionEnd = startPosition + 2;
   }
 }
-  constructor() { }
+  constructor(private clienteService: ClienteService,
+  private headerService: HeaderService,
+  private prontuarioService: ProntuarioService,
+  private userService: UserService) { }
 
   ngOnInit() {
+      this.subscription = this.clienteService.ClienteA$.subscribe(
+        nameC => this.nCliente = nameC
+      )
+      this.subscription = this.userService.EquipeA$.subscribe(
+        nameC => this.nUser = nameC
+      )
+
+      this.clienteService.ClienteAtual$.subscribe(clienteAtual => {
+        this.Atual = clienteAtual;
+      });
+      this.headerService.LinkA$.subscribe(link => {
+        this.linkA = link;
+      });
+}
+
+
+Insere (processedText: string) {
+  if (processedText.length > 1) {
+    let tipo: string = '';
+    switch (this.linkA) {
+      case "PRONTUÁRIO CLÍNICO":
+        tipo = 'clínico'
+        break;
+      case "PRONTUÁRIO ADMINISTRATIVO":
+        tipo = 'administrativo'
+        break;
+      case "CONTROLE FINANCEIRO":
+        tipo = 'financeiro'
+        break;
+      default:
+        tipo = ''
+        break;
+    }
+    const texto: Prontuario = {
+      id: 0,
+      idCliente: this.nCliente,
+      idColab: this.nUser !== undefined ? this.nUser : 0,
+      tipo: tipo,
+      dtInsercao: new Date(),
+      texto: processedText,
+    };
+    this.createProntuario(texto);
   }
+}
+
+createProntuario(texto: Prontuario) {
+  this.prontuarioService.CreateProntuario(texto).subscribe(
+    (data) => {
+      this.delay(300);
+      alert('Registro gravado!');
+      this.delay(300);
+      location.reload();
+    },
+    (error) => {
+      console.error('Erro no upload', error);
+    }
+  );
+}
+delay(time:number) {
+  setTimeout(() => {
+
+  }, time);
+}
 
 }

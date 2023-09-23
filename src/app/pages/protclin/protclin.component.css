@@ -44,9 +44,19 @@
 .bloco-antigo{
   width: 97.5%;
   padding: 4px;
-
+  height: 95%;
   border: 2px solid var(--cor-clara);
   border-radius: 10px;
+  overflow: hidden; /* Oculta qualquer conteúdo que exceda a altura máxima */
+}
+
+.listagem {
+  max-height: 100%; /* Defina a altura máxima desejada para o conteúdo */
+  max-width: 100%;
+  overflow: auto; /* Adicione barras de rolagem quando o conteúdo excede a altura máxima */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 .lado-direito{
   height: 80vh;
@@ -103,7 +113,20 @@
   padding: 2px;
 }
 
+.listagem::-webkit-scrollbar-thumb {
+  background-color: #fddfed;
+  border-radius: 6px;
+}
 
+.listagem::-webkit-scrollbar {
+  width: 14px;
+  background-color:#ffffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ffb6b6;
+  border-radius: 6px;
+  padding: 2px;
+}
 
 
 /*======= ELEMENTOS DENTRO DAS DIV'S =======*/
@@ -169,47 +192,3 @@
   border-radius: 6px;
   padding: 2px;
 }
-
-
-/*
-.container-left{
-    width: 30vh;
-    border: 2px solid var(--cor-clara);
-    border-radius: 10px;
-    display: inline;
-}
-
-
-.Salvar{
-  height: 10vh;
-  width: 100%;
-  background-color: var(--cor-clara);
-  font-size: 4vh;
-  color: var(--cor-escura);
-  border-radius: 2vh;
-  border-bottom: solid 2px var(--cor-escura);
-  border-top: solid 2px var(--cor-escura);
-  border-left: none 2px var(--cor-escura);
-  border-right: none 2px var(--cor-escura);
-}
-
-
-.container-info{
-    height: 65vh;
-    width: 148vh;
-    margin-top: 1vh;
-    margin-left: 11.5vh;
-    border: 2px solid var(--cor-clara);
-    border-radius: 10px;
-}
-.info{
-    display: inline-flex;
-}
-.botaoInfo {
-    display: block;
-    margin-top: 30vh;
-    margin-left: 4vh;
-}
-.botao{
-    margin: 1vh;
-} */

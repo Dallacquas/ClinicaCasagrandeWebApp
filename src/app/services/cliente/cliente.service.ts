@@ -15,30 +15,49 @@ import { TabResult } from 'src/app/models/Tables/TabResult';
 
 export class ClienteService {
   public Vazia: TableData[] = [{
-    Foto: '../../assets/img/Clientes/0000.jpg',
-    Ficha: '',
-    Id: 0,
-    Nome: '',
-    Nascimento: '',
-    Area: '',
-    selecionada: false,
-    SaiSoz: '',
-    Idade: '',
-    Desde: '',
-    Proxses: '',
-    TelefoneFixo:'',
-    Celular: '',
-    TelCom: '',
-    NomeMae: '',
-    NomePai: '',
-    DtIncl: '',
-    RespFin: '',
-    Endereco: '',
-    Email: '',
-    RestrMae: '',
-    RestrPai: '',
-    Identidade: '0',
-    Ativo: false
+  Foto: '(img)',
+  Ficha: '',
+  selecionada: false,
+  Proxses:  '',
+
+  id: 0,
+  nome:  '',
+  dtNascim:  '',
+  saiSozinho:  'Sim',
+  ativo : true,
+  areaSession:  '',
+  clienteDesde:  '',
+  Idade: '',
+  dtInclusao :  '',
+  respFinanc :  '',
+  identidade :  '',
+  cpf:  '',
+  endereco :  '',
+  email :  '',
+  telFixo: '',
+  celular: '',
+  telComercial: '',
+
+  mae : '',
+  maeRestric : 'Não',
+  maeIdentidade : '',
+  maeCpf: '',
+  maeEndereco : '',
+  maeEmail : '',
+  maeTelFixo: '',
+  maeCelular: '',
+  maeTelComercial: '',
+
+  pai : '',
+  paiRestric : 'Não',
+  paiIdentidade : '',
+  paiCpf: '',
+  paiEndereco : '',
+  paiEmail : '',
+  paiTelFixo: '',
+  paiCelular: '',
+  paiTelComercial: '',
+
     }];
 
   constructor(private http: HttpClient) { }
@@ -62,7 +81,13 @@ export class ClienteService {
   private ClienteAtual = new BehaviorSubject<TableData>(this.Vazia[0]);
   ClienteAtual$ = this.ClienteAtual.asObservable();
   setClienteAtual(name: TableData) {
+    // console.log('ClienteAtual ANTES')
+    // console.log(this.ClienteAtual)
     this.ClienteAtual.next(name);
+    // console.log('ClienteAtual ANTES')
+    // console.log(this.ClienteAtual)
+    // console.log('name (TableData)')
+    // console.log(name)
   }
 
   private ClienteA = new BehaviorSubject<number>(0);

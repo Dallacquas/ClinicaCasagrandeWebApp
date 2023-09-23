@@ -1,11 +1,14 @@
-import { MeuBotaoComponent } from 'src/app/sharepage/meu-botao/meu-botao.component';
-import {FormClienteComponent} from '../../sharepage/form-cliente/form-cliente.component';
+import { LoginComponent } from './../login/login.component';
+import { ColaboradorService } from './../../services/colaborador/colaborador.service';
+import { UserService } from './../../services/user.service';
 import { TableData } from 'src/app/models/Tables/TableData';
-import { Cliente } from './../../models/Clientes';
 import { ClienteService } from './../../services/cliente/cliente.service';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { SharedService } from '../../shared/shared.service';  // Atualize o caminho
 import { Subscription } from 'rxjs';
+import { ProntuarioService } from 'src/app/services/prontuario/prontuario.service';
+import { BlocoNotasComponent } from 'src/app/sharepage/bloco-notas/bloco-notas.component';
+import { Prontuario } from 'src/app/models/Prontuarios';
+import { Colaborador } from 'src/app/models/Colaboradors';
 
 
 @Component({
@@ -13,37 +16,67 @@ import { Subscription } from 'rxjs';
   templateUrl: './protclin.component.html',
   styleUrls: ['./protclin.component.css']
 })
-export class ProtclinComponent {
+export class ProtclinComponent implements OnInit, OnDestroy{
+
+  @ViewChild(BlocoNotasComponent) blocoNotas!: BlocoNotasComponent;
+  @ViewChild(LoginComponent) login!: LoginComponent;
   texto: string = '';
   private subscription!: Subscription;
-  nCliente: number = 0;
+  nCliente!: number;
   Atual!: TableData;
   public Ficha:string = 'FICHA';
   public NomeCliente: string = '';
   public MostraInfo: boolean = true;
   public idFoto: string = '';
+  public User!:Colaborador;
+  public nUser!: number;
+  public UserAll!: any;
 
-  constructor(private clienteService: ClienteService) { }
+
+
+  constructor(private colaboradorService: ColaboradorService,
+    private clienteService: ClienteService,
+    private prontuarioService: ProntuarioService,
+    private userService: UserService) {
+    this.subscription = this.clienteService.ClienteA$.subscribe(
+      nameC => this.nCliente = nameC
+    )
+    this.subscription = this.userService.EquipeA$.subscribe(
+      nameC => this.nUser = nameC
+    )
+
+    this.clienteService.ClienteAtual$.subscribe(clienteAtual => {
+      this.Atual = clienteAtual;
+    });
+  }
 
   ngOnInit() {
+
+
     this.subscription = this.clienteService.ClienteA$.subscribe(
-      name => this.nCliente = name
+      nameC => this.nCliente = nameC
     )
+    this.subscription = this.userService.EquipeA$.subscribe(
+      nameC => this.nUser = nameC
+    )
+
     this.clienteService.ClienteAtual$.subscribe(clienteAtual => {
       this.Atual = clienteAtual;
     });
 
+    this.UserAll = this.colaboradorService.GetColaborador();
+// this.delay(300);
+
     if(this.nCliente !== 0){
-      this.Ficha = this.Atual.Ficha;
-      this.NomeCliente = this.Atual.Nome.toUpperCase();
+        this.Ficha = this.Atual.Ficha;
+      this.NomeCliente = this.Atual.nome.toUpperCase();
       this.idFoto = '../../../assets/img/Clientes/' + this.Ficha + '.jpg'
 
       }else{
       this.Ficha = 'FICHA';
       this.NomeCliente = '';
-       console.log(this.idFoto)
+       // console.log(this.idFoto)
     }
-
     this.newInfo(this.MostraInfo);
   }
 
@@ -75,6 +108,8 @@ export class ProtclinComponent {
     { texto: 'Buscar neste Prontuário', altura: '4vh', largura: '30vh', cor: 'white' },
     { texto: 'Inserir nova informação', altura: '4vh', largura: '30vh', cor: 'white' },
  ]
-
+ ngOnDestroy(): void {
+  this.subscription.unsubscribe();
+}
 
 }

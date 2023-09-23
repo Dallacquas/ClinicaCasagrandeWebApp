@@ -6,7 +6,7 @@ export interface TabResult {
   dtInclusao: Date;
   maeRestric: boolean;
   paiRestric: boolean;
-  saSozinho: boolean;
+  saiSozinho: boolean;
   respFinanc: string;
   identidade: number;
   dtNascim: Date;

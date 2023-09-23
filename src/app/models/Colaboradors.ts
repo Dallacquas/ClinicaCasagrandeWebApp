@@ -1,18 +1,18 @@
 export interface Colaborador{
 
-    Id?: number;
-    Nome: string;
-    DtNasc?: string;
-    RG?: string;
-    CPF?: string;
-    Endereco?: string;
-    TelFixo?: string;
-    Celular?: string;
-    Email: string;
-    DtAdmis?: string;
-    DtDeslig?: string;
-    IdPerfil?: number;
-    Ativo?: boolean;
+    id?: number;
+    nome: string;
+    dtNasc?: string;
+    rg?: string;
+    cpf?: string;
+    endereco?: string;
+    telFixo?: string;
+    celular?: string;
+    email: string;
+    dtAdmis?: string;
+    dtDeslig?: string;
+    idPerfil?: number;
+    ativo?: boolean;
     areaSession?: string;
-    SenhaHash: string;
+    senhaHash: string;
 }

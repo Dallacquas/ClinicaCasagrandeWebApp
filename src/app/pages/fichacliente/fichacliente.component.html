@@ -17,10 +17,10 @@
         <div class="ti-img"><i class="material-icons" id="funil" >filter_alt</i></div>
     </div>
     <div class="nome-area" margin-left="2vh">
-        <div class="nome-selec"><label *ngIf="this.nCliente!==0">Ficha Nº {{this.Atual.Ficha}} - {{this.Atual.Nome}}</label></div>
+        <div class="nome-selec"><label *ngIf="this.nCliente!==0">Ficha Nº {{this.Atual.Ficha}} - {{this.Atual.nome}}</label></div>
         <div class="linhadebaixo">
             <div class="desde">
-                <label *ngIf="this.nCliente>0">Cliente desde {{this.Atual.Desde}}</label>
+                <label *ngIf="this.nCliente>0">Cliente desde {{this.Atual.clienteDesde}}</label>
             </div>
             <div class="idade">
                 <label *ngIf="this.nCliente>0">Idade: {{this.Atual.Idade}}</label>

@@ -35,7 +35,7 @@ import { Grid01Component } from './sharepage/grid01/grid01.component';
 import { FormClienteComponent } from './sharepage/form-cliente/form-cliente.component';
 import { FormsComponent } from './sharepage/forms/forms.component';
 import { ContainerFormsComponent } from './sharepage/container-forms/container-forms.component';
-import { FormsEquiComponent } from './sharepage/forms-equi/forms-equi.component';
+
 import { BlocoNotasComponent } from './sharepage/bloco-notas/bloco-notas.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -44,6 +44,14 @@ import { ClienteService } from './services/cliente/cliente.service';
 import { UserService } from './services/user.service';
 import { DefinitionsComponent } from './pages/definitions/definitions.component';
 import { PerfilTabComponent } from './sharepage/perfil-tab/perfil-tab.component';
+import { UnidadeComponent } from './sharepage/unidade/unidade.component';
+import { DadosformComponent } from './sharepage/dadosform/dadosform.component';
+import { RouterModule } from '@angular/router';
+import { Grid02Component } from './sharepage/grid02/grid02.component';
+import { FormProntComponent } from './sharepage/form-pront/form-pront.component';
+import { ModalComponent } from './sharepage/forms/modal/modal.component';
+import { EquipeModalComponent } from './pages/cadprof/equipe-modal/equipe-modal.component';
+
 registerLocaleData(localePt);
 
 export function tokenGetter() {
@@ -75,11 +83,15 @@ export function tokenGetter() {
     FormClienteComponent,
     FormsComponent,
     ContainerFormsComponent,
-    FormsEquiComponent,
     BlocoNotasComponent,
     DefinitionsComponent,
     PerfilTabComponent,
-
+    UnidadeComponent,
+    DadosformComponent,
+    Grid02Component,
+    FormProntComponent,
+    ModalComponent,
+    EquipeModalComponent,
   ],
 
 

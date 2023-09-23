@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   public Perf: string='';
   public UsrLog: string  = '';
   public UsrLogA: any;
+  public nUser!: number;
   private subscription!: Subscription;
 
 
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.UsrLogA=this.userService.getUser();
     if(this.UsrLogA != null){
+      this.nUser = this.UsrLogA.id;
       this.UsrLog = this.DefinirUsuario(this.UsrLogA)
     };
 
@@ -75,11 +77,11 @@ DefinirUsuario(n: User){
 // login(email: string, password: string) {
 //   this.colab.GetColaboradorbyEmail(email, password).subscribe((data) => {
 //     const dados = data.dados;
-//     console.log(dados)
+//     // console.log(dados)
 
 //     this.colab.colaboradores = data.dados;
 //     this.colab.colaboradorG.sort((a, b) => a.Nome.localeCompare(b.Nome));
-//     console.log(this.colab.colaboradores);
+//     // console.log(this.colab.colaboradores);
 //   });
 // }
 // }

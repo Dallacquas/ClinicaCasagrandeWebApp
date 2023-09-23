@@ -37,96 +37,88 @@ export class Grid01Component {
       this.Carregar();
     });
 
-
   }
 
   async Carregar(){
     for (let i of this.clienteService.clientesG) {
-      let aCelular: string = '---';
-      let aComercial: string = '---';
-      let aFixo: string = '---';
+      // let aCelular: string = '---';
+      // let aComercial: string = '---';
+      // let aFixo: string = '---';
       let aSaiS: string = 'Não';
       let aRestM: string = 'Não';
       let aRestP: string = 'Não';
 
       if(i.id !== undefined){
-        if(i.celular!== undefined && i.celular!== null){
-          aCelular = i.celular.toString();
-          if (aCelular.length === 7) {
-            aCelular = `# ${aCelular.slice(0, 4)}-${aCelular.slice(4)}`;
-          } else if (aCelular.length === 8) {
-            aCelular = `${aCelular.slice(0, 4)}-${aCelular.slice(4)}`;
-          } else {
-            aCelular = '---';
-          }
-        }
-        if(i.saSozinho == true){
-          aSaiS = 'Sim';
-        }
-        if(i.telComercial!== undefined && i.telComercial!== null){
-          aComercial = i.telComercial.toString();
-          if (aComercial.length === 7) {
-            aComercial = `# ${aComercial.slice(0, 4)}-${aComercial.slice(4)}`;
-          } else if (aComercial.length === 8) {
-            aComercial = `${aComercial.slice(0, 4)}-${aComercial.slice(4)}`;
-          } else {
-            aComercial = '---';
-          }
-        }
-        if(i.telFixo!== undefined && i.telFixo!== null){
-          aFixo = i.telFixo.toString();
-          if (aFixo.length === 7) {
-            aFixo = `# ${aFixo.slice(0, 4)}-${aFixo.slice(4)}`;
-          } else if (aFixo.length === 8) {
-            aFixo =  `${aFixo.slice(0, 4)}-${aFixo.slice(4)}`;
-          } else {
-            aFixo = '---';
-          }
-        }
-        if(i.maeRestric == true){
+
+        if(i.maeRestric === true){
           aRestM = 'Sim';
         }
-        if(i.paiRestric == true){
+        if(i.paiRestric === true){
           aRestP = 'Sim';
         }
-
+        if(i.saiSozinho === true){
+          aSaiS = 'Sim';
+        }
         const aId: string = i.id.toString().padStart(4, '0');
         const aIdade1 = this.converterParaDate(i.dtNascim);
         const aIdade: string = this.calcularIdade(aIdade1) + ' anos';
         this.caminho = '../../assets/img/Clientes/' + aId + '.jpg';
         const imagemValida = await this.verificarImagem(this.caminho);
-        //console.log('imagem ' + this.Verifica)
+        //// console.log('imagem ' + this.Verifica)
           if (imagemValida !== true) {
             this.caminho = '../../assets/img/Clientes/0000.jpg';
         }
         this.nLin =[{Foto: this.caminho,
           Ficha: aId,
-          Id: i.id,
-          Nome: i.nome,
-          SaiSoz: aSaiS,
-          Nascimento: i.dtNascim,
-          Area: i.areaSession,
-          TelefoneFixo: aFixo,
-          Celular: aCelular,
+          id: i.id,
+          nome: i.nome,
+          saiSozinho: aSaiS,
+          dtNascim: i.dtNascim,
+          areaSession: i.areaSession,
+          telFixo: i.telFixo,
+          celular: i.celular,
           selecionada: false,
           Idade:aIdade,
-          Desde:i.clienteDesde,
-          NomeMae: i.mae,
-          NomePai: i.pai,
-          DtIncl: i.dtInclusao,
-          RespFin: i.respFinanc,
-          Endereco: i.endereco,
-          Email: i.email,
-          RestrMae: aRestM,
-          RestrPai: aRestP,
-          Identidade: i.identidade,
-          Ativo: i.ativo
+          clienteDesde:i.clienteDesde,
+          dtInclusao: i.dtInclusao,
+          respFinanc: i.respFinanc,
+          endereco: i.endereco,
+          email: i.email,
+          identidade: i.identidade,
+          ativo: i.ativo,
+          cpf: i.cpf,
+          telComercial: i.telComercial,
+
+          mae: i.mae,
+          maeIdentidade:i.maeIdentidade,
+          maeCpf:i.maeCpf,
+          maeRestric: aRestM,
+          maeCelular: i.maeCelular,
+          maeTelFixo:i.maeTelFixo,
+          maeTelComercial: i.maeTelComercial,
+          maeEmail: i.maeEmail,
+          maeEndereco: i.maeEndereco,
+
+          pai: i.pai,
+          paiIdentidade:i.paiIdentidade,
+          paiCpf:i.paiCpf,
+          paiRestric: aRestP,
+          paiCelular: i.paiCelular,
+          paiTelFixo:i.paiTelFixo,
+          paiTelComercial: i.paiTelComercial,
+          paiEmail: i.paiEmail,
+          paiEndereco: i.paiEndereco,
         }];
         this.dataSource = [...this.dataSource, ...this.nLin]
 
       }
     }
   }
+
+
+
+
+
   verificarImagem(url: string): Promise<boolean> {
     return new Promise((resolve) => {
       const img = new Image();
@@ -174,13 +166,13 @@ export class Grid01Component {
     // const Vazia1 = this.dataSource.find(cliente => cliente.Id === numero)
 
     this.clienteService.setClienteAtual(this.dataSource.find(cliente => parseInt(cliente.Ficha, 10) === numero) || this.clienteService.Vazia[0]);
-    //console.log(this.dataSource);
+    //// console.log(this.dataSource);
     l.selecionada = true;// Marcar a linha clicada
     this.nChanges = true;
     setTimeout(() => {
       this.clienteService.setChangesA(true);
     }, 0)
-    console.log(l)
+    // console.log(l)
   }
 
 

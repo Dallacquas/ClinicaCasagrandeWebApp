@@ -13,8 +13,6 @@ import { first } from 'rxjs/operators';
 import { Grid01Component } from 'src/app/sharepage/grid01/grid01.component';
 import { TabResult } from 'src/app/models/Tables/TabResult';
 
-/*import { UserService, AlertService } from '@app/services';
-import { MustMatch } from '@app/_helpers';*/
 
 @Component({
   selector: 'app-fichacliente',
@@ -23,9 +21,8 @@ import { MustMatch } from '@app/_helpers';*/
 })
 
 
-
 export class FichaclienteComponent implements OnDestroy, OnInit {
-  // [x: string]: any;
+  // [x: string]: any; 
 
   @ViewChild(FormClienteComponent) formCliente!: FormClienteComponent;
   selectedName: string = '';
@@ -74,15 +71,17 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
   // ============== FIM DAS VARIÁVEIS PARA CRIAR COMPONENTES =========================================
 
 
-  constructor(private sharedService: SharedService, public dialog: MatDialog, private clienteService: ClienteService){
+  constructor(private sharedService: SharedService,
+    public dialog: MatDialog,
+    private clienteService: ClienteService){
 
     this.subscription = this.sharedService.selectedName$.subscribe(
       name => this.selectedName = name
     );
 
-      this.subscription = this.clienteService.ClienteA$.subscribe(
-        name => this.nCliente = name
-      )
+    this.subscription = this.clienteService.ClienteA$.subscribe(
+      name => this.nCliente = name
+    );
 
 
     this.sharedService.currentSelectedRow.subscribe(row => {
@@ -94,14 +93,6 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
 
     });
 
-
-
-    // this.subscription = this.sharedService.selectedNascimento$.subscribe(
-    //   name => {this.selectedNascimento = name
-    //   this.idade1 = this.converterParaDate(this.selectedNascimento);
-    //   this.idade = this.calcularIdade(this.idade1);}
-    // );
-    // this.sharedService.selectedImage$.subscribe(img => this.selectedImage = img!);
 
   }
 
@@ -116,20 +107,20 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
 
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-
-  }
-
     ngOnInit(): void {
       this.clienteService.ClienteAtual$.subscribe(clienteAtual => {
         this.Atual = clienteAtual;
-        console.log(this.Atual)
       });
       this.clienteService.ChangesA$.subscribe(chng => {
         this.nChanges = chng;
       });
     }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+
+  }
+
 
   converterParaDate(dataString: string): Date {
     const [dia, mes, ano] = dataString.split('/').map(Number);
@@ -157,82 +148,114 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
         disableClose: true  // Isto impede que o modal seja fechado ao clicar fora dele ou pressionar ESC
     });
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('O modal foi fechado');
+      // // console.log('O modal foi fechado');
       // Você pode adicionar mais lógicas aqui se necessário.
     });
   }
 
+
   buscarAlteracoes(event:any){
     let TabNas: string = new Date().toISOString().split('T')[0];
       const TabForm = this.formCliente.clienteform.value
+      let RestM = false;
+      let RestP = false;
+      let RestMT = false;
+      let RestPT = false;
+      let Ssz = false;
+      let SszT = false;
       if(TabForm.telComercial == null){
         TabForm.telComercial="0";
       }
-      if(this.Atual.TelCom == null){
-        this.Atual.TelCom="0";
+      if(this.Atual.telComercial == null || undefined){
+        this.Atual.telComercial="0";
       }
-
+      if(this.Atual.maeRestric !== null || undefined){
+        this.Atual.maeRestric =='Sim' ? RestM = true : RestM = false
+      }
+      if(this.Atual.paiRestric !== null || undefined){
+        this.Atual.paiRestric =='Sim' ? RestP = true : RestP = false
+      }
+      if(this.Atual.saiSozinho !== null || undefined){
+        this.Atual.saiSozinho =='Sim' ? Ssz = true : Ssz = false
+      }
+      if(TabForm.maeRestric !== null || undefined){
+        TabForm.maeRestric == true ? RestMT = true : RestMT = false
+      }
+      if(TabForm.paiRestric !== null || undefined){
+        TabForm.paiRestric == true ? RestPT = true : RestPT = false
+      }
+      if(TabForm.saiSozinho !== null || undefined){
+        TabForm.saiSozinho == true ? SszT = true : SszT = false
+      }
+// console.log('saiSozinho de TabForm:')
+// console.log(TabForm.saiSozinho)
+// console.log('saiSozinho de Atual:')
+// console.log(this.Atual.saiSozinho)
+// console.log('saiSozinho de SszT:')
+// console.log(SszT)
+// console.log('saiSozinho de Ssz:')
+// console.log(Ssz)
       let Dif = 0;
-      console.log('Id atual: ' + this.Atual.Id)
 
-      this.Atual.Nome !== TabForm.nome ?  Dif+=1 : null;
-      this.Atual.Nascimento == '' ?  this.Atual.Nascimento = new Date().toISOString().split('T')[0] : null;
-      this.Atual.Nascimento !== TabForm.dtNascim ?  Dif+=1 : null;
-      this.Atual.Desde == '' ?  this.Atual.Desde = new Date().toLocaleDateString() : null;
-      this.Atual.DtIncl == '' ?  this.Atual.DtIncl = new Date().toLocaleDateString() : null;
-      this.Atual.Identidade !== TabForm.identidade ?  Dif+=1 : null;
-      this.Atual.Email !== TabForm.email ?  Dif+=1 : null;
-      this.Atual.TelefoneFixo !== TabForm.telFixo ?  Dif+=1 : null;
-      this.Atual.Celular !== TabForm.celular ?  Dif+=1 : null;
-      this.Atual.Endereco !== TabForm.endereco ?  Dif+=1 : null;
-      this.Atual.NomeMae !== TabForm.mae ?  Dif+=1 : null;
-      this.Atual.TelCom !== TabForm.telComercial ?  Dif+=1 : null;
-      this.Atual.NomePai !== TabForm.pai ?  Dif+=1 : null;
+      this.Atual.nome !== TabForm.nome ?  Dif+=1 : null;
+      this.Atual.dtNascim == '' ?  this.Atual.dtNascim = new Date().toISOString().split('T')[0] : null;
+      this.Atual.dtNascim !== TabForm.dtNascim ?  Dif+=1 : null;
+      this.Atual.clienteDesde == '' ?  this.Atual.clienteDesde = new Date().toLocaleDateString() : null;
+      this.Atual.dtInclusao == '' ?  this.Atual.dtInclusao = new Date().toLocaleDateString() : null;
+      Ssz !== SszT ?  Dif+=1 : null;
+      this.Atual.identidade !== TabForm.identidade ?  Dif+=1 : null;
+      this.Atual.cpf !== TabForm.Cpf ?  Dif+=1 : null;
+      this.Atual.email !== TabForm.email ?  Dif+=1 : null;
+      this.Atual.telFixo !== TabForm.telFixo ?  Dif+=1 : null;
+      this.Atual.celular !== TabForm.celular ?  Dif+=1 : null;
+      this.Atual.endereco !== TabForm.endereco ?  Dif+=1 : null;
+      this.Atual.telComercial !== TabForm.telComercial ?  Dif+=1 : null;
 
-      // console.log('Id atual: ' + this.Atual.Id + '(Atual) e ' + TabForm.Id + '(TabForm)')
-      // console.log('Diferenças encontradas: ' + Dif)
-      // console.log(this.Atual.DtIncl + ' - ' + typeof this.Atual.DtIncl)
-      // console.log(this.Atual.Desde + ' - ' + typeof this.Atual.Desde)
-      // console.log(this.Atual.Nascimento + ' - ' + typeof this.Atual.Nascimento)
-      // console.log('TAB ' + TabForm.dtNascim + ' - ' + typeof TabForm.dtNascim)
-      console.log('TAB Antes: ' + TabNas)
-      console.log(TabForm.dtNascim)
+      this.Atual.mae !== TabForm.mae ?  Dif+=1 : null;
+      RestM !== RestMT ?  Dif+=1 : null;
+      this.Atual.maeIdentidade !== TabForm.maeIdentidade ?  Dif+=1 : null;
+      this.Atual.maeCpf !== TabForm.maeCpf ?  Dif+=1 : null;
+      this.Atual.maeCelular !== TabForm.maeCelular ?  Dif+=1 : null;
+      this.Atual.maeTelFixo !== TabForm.maeTelFixo ?  Dif+=1 : null;
+      this.Atual.maeTelComercial !== TabForm.maeTelComercial ?  Dif+=1 : null;
+      this.Atual.maeEmail !== TabForm.maeEmail ?  Dif+=1 : null;
+      this.Atual.maeEndereco !== TabForm.maeEndereco ?  Dif+=1 : null;
+
+      this.Atual.pai !== TabForm.pai ?  Dif+=1 : null;
+      RestP !== RestPT ?  Dif+=1 : null;
+      this.Atual.paiIdentidade !== TabForm.paiIdentidade ?  Dif+=1 : null;
+      this.Atual.paiCpf !== TabForm.paiCpf ?  Dif+=1 : null;
+      this.Atual.paiCelular !== TabForm.paiCelular ?  Dif+=1 : null;
+      this.Atual.paiTelFixo !== TabForm.paiTelFixo ?  Dif+=1 : null;
+      this.Atual.paiTelComercial !== TabForm.paiTelComercial ?  Dif+=1 : null;
+      this.Atual.paiEmail !== TabForm.paiEmail ?  Dif+=1 : null;
+      this.Atual.paiEndereco !== TabForm.paiEndereco ?  Dif+=1 : null;
+
+
 
       try{
         let a = TabForm.dtNascim;
-        console.log('a'+a)
         let b = this.reDatas(a);
-        console.log('b'+b)
         let c = b.split('T')[0];
-        console.log('c'+c)
         TabNas = c
       }
       catch
       {
         let b = new Date();
-        console.log('b'+b)
         let c = b.toISOString();
-        console.log('c'+c)
         TabNas = c.split('T')[0];
         TabNas = new Date().toISOString().split('T')[0];
       }
 
-      console.log('TAB depois: ' + TabNas)
-      console.log('Diferenças: ' + Dif)
-      console.log('Sai: ' + TabForm.saSozinho + ' //' + typeof TabForm.saSozinho)
-      //if(Dif>0){
-        let Tab: Cliente = {
-          id: this.Atual.Id == null ? 0 : this.Atual.Id,
+     if(Dif>0){
+        let Tab = {
+          id: this.Atual.id == null ? 0 : this.Atual.id,
           nome: TabForm.nome == null ? '0' : TabForm.nome,
-          mae: TabForm.mae == null ? '0' : TabForm.mae,
-          pai: TabForm.pai == null ? '0' : TabForm.pai,
-          //dtInclusao: this.Atual.DtIncl == null ? new Date().toString : this.Atual.DtIncl,
-          dtInclusao: this.Atual.DtIncl == null ? new Date().toISOString() : this.reDatas(this.Atual.DtIncl),
-          maeRestric: TabForm.maeRestric == null ? false : TabForm.maeRestric,
-          paiRestric: TabForm.paiRestric == null ? false : TabForm.paiRestric,
-          saSozinho: TabForm.saSozinho == null ? false : TabForm.saSozinho,
+          dtInclusao: this.Atual.dtInclusao == null ? new Date().toISOString() : this.reDatas(this.Atual.dtInclusao),
+          saiSozinho: SszT,
           respFinanc: TabForm.respFinanc == null ? 'Mãe' : TabForm.respFinanc,
           identidade: TabForm.identidade == null ? '0' : TabForm.identidade.toString(),
+          cpf: TabForm.cpf == null ? '0' : TabForm.cpf.toString(),
           //dtNascim: TabForm.dtNascim == null ? new Date().toString : TabForm.dtNascim,
           //dtNascim: TabForm.dtNascim == null ? new Date().toISOString().split('T')[0] : new Date(TabForm.dtNascim).toISOString().split('T')[0],
           dtNascim: TabNas,
@@ -242,25 +265,44 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
           email: TabForm.email == null ? '0' : TabForm.email,
           endereco: TabForm.endereco == null ? '0' : TabForm.endereco,
           //clienteDesde: this.Atual.Desde == null ? new Date().toString : this.Atual.Desde,
-          clienteDesde: this.Atual.Desde == null ? new Date().toISOString() : this.reDatas(this.Atual.DtIncl),
+          clienteDesde: this.Atual.clienteDesde == null ? new Date().toISOString() : this.reDatas(this.Atual.dtInclusao),
           ativo: true,
-          areaSession: TabForm.mae == null ? '' : this.Atual.Area,
-        }
-        console.log(Tab.dtInclusao + ' (Inclusão) ' + typeof Tab.dtInclusao)
-        console.log(Tab.dtNascim + ' (Nascimento) ' + typeof Tab.dtNascim)
-        console.log(Tab.clienteDesde + ' (Desde) ' + typeof Tab.clienteDesde)
+          areaSession: TabForm.areaSession == null ? '' : this.Atual.areaSession,
 
+          mae: TabForm.mae == null ? '0' : TabForm.mae,
+          maeRestric: RestMT,
+          maeIdentidade: TabForm.maeIdentidade == null ? '' : TabForm.maeIdentidade,
+          maeCpf:  TabForm.maeCpf == null ? '' : TabForm.maeCpf,
+          maeCelular:  TabForm.maeCelular == null ? '0' : TabForm.maeCelular,
+          maeTelFixo:  TabForm.maeTelFixo == null ? '0' : TabForm.maeTelFixo,
+          maeTelComercial:  TabForm.maeTelComercial == null ? '0' : TabForm.maeTelComercial,
+          maeEmail:  TabForm.maeEmail == null ? '' : TabForm.maeEmail,
+          maeEndereco:  TabForm.maeEndereco == null ? '' : TabForm.maeEndereco,
+
+          pai: TabForm.pai == null ? '0' : TabForm.pai,
+          paiRestric: RestPT,
+          paiIdentidade: TabForm.paiIdentidade == null ? '0' : TabForm.paiIdentidade,
+          paiCpf: TabForm.paiCpf == null ? '0' : TabForm.paiCpf,
+          paiCelular: TabForm.paiCelular == null ? '0' : TabForm.paiCelular,
+          paiTelFixo: TabForm.paiTelFixo == null ? '0' : TabForm.paiTelFixo,
+          paiTelComercial: TabForm.paiTelComercial == null ? '0' : TabForm.paiTelComercial,
+          paiEmail: TabForm.paiEmail == null ? '-' : TabForm.paiEmail,
+          paiEndereco: TabForm.paiEndereco == null ? '-' : TabForm.paiEndereco,
+        }
+
+// console.log('Tab')
+// console.log(Tab) 
         if(Tab.id==0){
-          console.log(Tab.id + ' - indo para create')
-          console.log(Tab)
+          // console.log(Tab.id + ' - indo para create')
+          // console.log(Tab)
           this.createCliente(Tab)
         }else{
-          console.log(Tab.id + ' - indo para update')
-          console.log(Tab)
+          // console.log(Tab.id + ' - indo para update')
+          // console.log(Tab)
           this.updateCliente(Tab)
         }
 
-      //}
+      }
 
   }
 
@@ -271,17 +313,17 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
 
 
     reDatas(dataO: string){
-      console.log('reDatas: ' + dataO)
+      // console.log('reDatas: ' + dataO)
 
       const [dia, mes, ano] = dataO.split('/');
       if(dia.length == 2){
         const data = new Date(Number(ano), Number(mes) - 1, Number(dia));
         const dataFormatada = data.toISOString();
-        console.log('Formatada: ' + dataFormatada);
+        // console.log('Formatada: ' + dataFormatada);
         return (dataFormatada);
       }
       else{
-        console.log('Original: ' + dataO);
+        // console.log('Original: ' + dataO);
         return (dataO);
       }
 
@@ -289,7 +331,7 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
 
   createCliente(cliente: Cliente){
     this.clienteService.CreateCliente(cliente).subscribe((data) => {
-      console.log(data)
+      // console.log(data)
       this.delay(300)
       alert('Registro gravado!')
       location.reload()
@@ -300,7 +342,8 @@ export class FichaclienteComponent implements OnDestroy, OnInit {
 
     updateCliente(cliente: Cliente){
       this.clienteService.UpdateCliente(cliente).subscribe((data) => {
-        console.log(data)
+        // console.log('Este é o retorno:')
+        // console.log(data)
         this.delay(300)
         alert('Registro atualizado!')
         location.reload()

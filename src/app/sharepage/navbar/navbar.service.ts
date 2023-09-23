@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,10 @@ export class NavbarService {
   private showNavbarSubject = new BehaviorSubject<boolean>(true);
   showNavbar$ = this.showNavbarSubject.asObservable();
 
-  constructor() { }
+
+
+  constructor(public userService: UserService,
+    ) { }
 
   toggleNavbar(show: boolean): void {
     this.showNavbarSubject.next(show);

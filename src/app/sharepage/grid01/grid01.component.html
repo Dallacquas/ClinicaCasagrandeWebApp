@@ -11,13 +11,14 @@
         </thead>
         <tbody>
             <tr *ngFor="let l of dataSource" [class.linhaDestacada]="l.selecionada">
-                <td class="t001" (click)="destacarLinha(l, l.Ficha)"> <img src="{{l.Foto}}" style="height:50px; width:auto"></td>
+                <td class="t001" (click)="destacarLinha(l, l.Ficha)">(img)</td>
                 <td class="t002" (click)="destacarLinha(l, l.Ficha)"> {{l.Ficha}}</td>
-                <td class="t003" (click)="destacarLinha(l, l.Ficha)"> {{l.Nome}}</td>
-                <td class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.Nascimento}}</td>
+                <td class="t003" (click)="destacarLinha(l, l.Ficha)"> {{l.nome}}</td>
+                <td class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.dtNascim}}</td>
                 <td class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.Idade}}</td>
-                <td class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.TelefoneFixo}} - {{l.Celular}}</td>
-                <td class="t005" (click)="destacarLinha(l, l.Ficha)"> {{l.SaiSoz}}</td>
+                <td *ngIf="l.respFinanc == 'Cliente'" class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.celular}}<br>{{l.telFixo}}</td>
+                <td *ngIf="l.respFinanc !== 'Cliente'" class="t004" (click)="destacarLinha(l, l.Ficha)"> {{l.maeCelular}}<br>{{l.maeTelFixo}}<br>{{l.maeTelComercial}}</td>
+                <td class="t005" (click)="destacarLinha(l, l.Ficha)"> {{l.saiSozinho}}</td>
             </tr>
         </tbody>
     </table>

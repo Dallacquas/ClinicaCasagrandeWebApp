@@ -1,13 +1,10 @@
 export interface Formacao{
-
-  Id?: number;
-  IdFuncionario?: number;
-  DtConclusao?: string;
-  Nivel?: string;
-  Registro?: string;
-  Instituicao?: string;
-  NomeFormacao?: string;
-  AreasRelacionadas?: string;
-
-
+  id?: number;
+  idFuncionario: number;
+  dtConclusao?: string;
+  nivel?: string;
+  registro?: string;
+  instituicao?: string;
+  nomeFormacao?: string;
+  areasRelacionadas?: string;
 }

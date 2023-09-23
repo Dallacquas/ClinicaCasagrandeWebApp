@@ -35,9 +35,9 @@ import{NavbarComponent } from '../../sharepage/navbar/navbar.component'
           const authToken = res.body as any;
           this.userService.setToken(authToken.token);
           this.userService.setUser(authToken);
-          this.userService.setUserA(authToken);
-          console.log(res.headers.get('Baerer'));
-          console.log(`User ${userName} authenticated with token ${authToken.token}`);
+          // this.userService.setUserA(authToken);
+          // console.log(res.headers.get('Baerer'));
+          // console.log(`User ${userName} authenticated with token ${authToken.token}`);
       }))
     }
 
@@ -64,16 +64,16 @@ import{NavbarComponent } from '../../sharepage/navbar/navbar.component'
         }
         else if(error.status == 0)
         {
-          console.log('erro = 0!');
-          console.log(error);
+          // console.log('erro = 0!');
+          // console.log(error);
           this.userService.logout();
           this.tokenService.removeToken();
           this.router.navigate(['/']);
         }
         else
         {
-          console.log('Erro não tratado no interceptor');
-          console.log(error);
+          // console.log('Erro não tratado no interceptor');
+          // console.log(error);
         }
       })) as Observable<HttpEvent<any>>;
 }}
@@ -120,7 +120,7 @@ constructor(private colab: ColaboradorService) {
 login(email: string, password: string) {
   this.colab.GetColaboradorbyEmail(email, password).subscribe((data) => {
     const dados = data.dados;
-    console.log(dados)
+    // console.log(dados)
     dados.map((item) => {
       item.DtDeslig = new Date(item.DtDeslig!).toLocaleDateString('pt-BR');
       item.DtAdmis = new Date(item.DtAdmis!).toLocaleDateString('pt-BR');
@@ -129,7 +129,7 @@ login(email: string, password: string) {
     this.colab.colaboradores = data.dados;
     this.colab.colaboradorG = data.dados;
     this.colab.colaboradorG.sort((a, b) => a.Nome.localeCompare(b.Nome));
-    console.log(this.colab.colaboradores);
+    // console.log(this.colab.colaboradores);
     if (data) {
       const fakeJWTToken = 'fake-jwt-token';
       localStorage.setItem('access_token', fakeJWTToken);

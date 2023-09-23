@@ -1,9 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SharedService } from '../../shared/shared.service';  // Atualize o caminho
-import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { Colaborador } from "src/app/models/Colaboradors";
+import { TableProf } from "src/app/models/Tables/TableProf";
+import { User } from "src/app/models/user";
+import { UserService } from "src/app/services";
+import { ColaboradorService } from "src/app/services/colaborador/colaborador.service";
+import { FormacaoService } from "src/app/services/formacao/formacao.service";
+import { FormClienteComponent } from "src/app/sharepage/form-cliente/form-cliente.component";
+import { FormsComponent } from "src/app/sharepage/forms/forms.component";
+import { ModalComponent } from "../../sharepage/forms/modal/modal.component";
+import { MatDialog } from "@angular/material/dialog";
+import { EquipeModalComponent } from "./equipe-modal/equipe-modal.component";
+
 
 @Component({
   selector: 'app-cadprof',
@@ -13,93 +21,92 @@ import { first } from 'rxjs/operators';
   <label>{{ selectedName }}</label>
 `
 })
-export class CadprofComponent implements OnDestroy {
-  selectedName: string = '';
-  selectedNascimento: string = '';
-  selectedFicha: string = 'NOVO';
-  imagefilter = 'assets/img/filter_alt_black_24dp.svg';
+export class CadprofComponent implements OnDestroy, OnInit {
 
-  private subscription: Subscription;
-  Selecionada: string = 'Seu texto aqui';
-  public idade1: any;
-  public idade: any;
+  @ViewChild(FormsComponent) formProf!: FormsComponent;
 
-  novo = [
-    { texto: this.selectedFicha, altura: '9vh', largura: '18vh', cor: 'var(--cor-clara)', size: '16pt' }
-  ];
-  bAnexar = [
-    { texto: 'Anexar Arquivos', altura: '100%', largura: '100%', cor: 'white', size: '16pt' }
- ]
-  containers = [
-    {altura:'10vh', largura: "200vh"}
-  ]
-  meutxt = {
-    label: 'Parâmetro',
-    nome: 'filtro-param',
-    largura: '65%',  // em pixels
-    altura: '3.5vh'     // em pixels
-  };
+    Atual: TableProf = {
+      foto: 'string',
+      ficha: 'string',
+      id: 0,
+      nome: 'string',
+      nascimento: 'any',
+      area: '',
+      selecionada: false,
+      desde: '',
+      proxses: '',
+      celular: '',
+      identidade : '',
+      cpf : '',
+      endereco : '',
+      email : '',
+      ativo : true,
+      perfil : '',
+      formacao: undefined
+    };
 
-  filtro = [
-    {altura:'4vh', largura: "30vh"}
-  ]
+    pLin: TableProf[] = [];
+    dataSource: TableProf[] = [];
+    ColAt!: TableProf;
 
-  infoContainer = [
-    {altura:'55vh', largura: "80vh"}
-  ]
-  salvarEnd = [
-    {texto: 'Salvar', altura: "7vh", largura:'18vh', cor: 'var(--cor-clara)', size: '18pt', fontCor: 'black'},
-    {texto: 'Cancelar', altura: "7vh", largura:'18vh', cor: 'var(--cor-media)', size: '18pt', fontCor: 'white'}
-  ]
-  imagefiltro = 'Clinica/Clinica/src/assets/img/filter_alt_black_24dp.svg';
-  selectedImage: string = '';
+    nProf = 1;
+    EAtual!: Colaborador; // guarda o usuário atual
+    nEquipe: number = 0;
+    FAtual: any; //guarda a lista de Formações do usuário.
+    nFormacao: number = 0;
+    public Usr!: User;
+    nUsr:number = 0;
+    private subscription: Subscription;
+    nChanges: boolean = false;
+    Selecionada: string = '';
+    ListaEquipe: any;
+    ListaFormacaos: any;
+    private control!:any;
+    private ctrl1: boolean = false;
+    private ctrl2: boolean = false;
 
-  constructor(private sharedService: SharedService){
-    this.subscription = this.sharedService.selectedName$.subscribe(
-      name => this.selectedName = name
-    );
+    private estadoMonitorado = new BehaviorSubject<boolean>(false);
 
-    this.sharedService.currentSelectedRow.subscribe(row => {
-      this.Selecionada = row;
-  });
-    this.subscription = this.sharedService.selectedFicha$.subscribe(
-      name => this.selectedFicha = name
-    );
+  constructor(private formacaoService: FormacaoService,
+    private userService: UserService,
+    public dialog: MatDialog,
+    private colaboradorService: ColaboradorService,
+    ){
+      this.subscription = this.colaboradorService.EquipeA$.subscribe(
+        name => this.nEquipe = name
+      );
 
-    this.subscription = this.sharedService.selectedNascimento$.subscribe(
-      name => {this.selectedNascimento = name
-      this.idade1 = this.converterParaDate(this.selectedNascimento);
-    this.idade = this.calcularIdade(this.idade1);}
-    );
-    this.sharedService.selectedImage$.subscribe(img => this.selectedImage = img!);
 
-  }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  converterParaDate(dataString: string): Date {
-    const [dia, mes, ano] = dataString.split('/').map(Number);
-    return new Date(ano, mes - 1, dia);
-}
-  calcularIdade(dataNascimento: Date): string {
-    const hoje = new Date();
-    let idade = hoje.getFullYear() - dataNascimento.getFullYear();
-
-    // Ajuste para caso o aniversário ainda não tenha ocorrido este ano
-    const m = hoje.getMonth() - dataNascimento.getMonth();
-    if (m < 0 || (m === 0 && hoje.getDate() < dataNascimento.getDate())) {
-        idade--;
     }
 
-    return idade.toString();
+  ngOnInit(){
+    this.colaboradorService.dataSource = [];
+    this.colaboradorService.inicio();
+
+    this.colaboradorService.ProfAtual$.subscribe(EquipeAtual => {
+      this.ColAt = EquipeAtual;
+    });
+    this.colaboradorService.ChangesA$.subscribe(chng => {
+      this.nChanges = chng;
+    });
+    
+
   }
 
-  isNotNaN(valor: any): boolean {
-    return !isNaN(valor);
-}
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
 
-  // onButtonClick(){
+  }
 
-  // }
+
+  CliqueNovo(){
+    const dialogRef = this.dialog.open(EquipeModalComponent, {
+      disableClose: true  // Isto impede que o modal seja fechado ao clicar fora dele ou pressionar ESC
+  });
+  dialogRef.afterClosed().subscribe((result: any) => {
+   
+  });
+  }
+
+
 }

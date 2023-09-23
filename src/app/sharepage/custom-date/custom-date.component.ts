@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HeaderService } from '../navbar/header.service';
 
 @Component({
   selector: 'app-custom-date',
@@ -8,13 +9,20 @@ import { Component, OnInit } from '@angular/core';
 export class CustomDateComponent implements OnInit {
   displayedDate: Date = new Date();
   semana = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
-  constructor() {}
+  linkA!: string;
+  constructor(private headerService: HeaderService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.headerService.LinkA$.subscribe(link => {
+      this.linkA = link;
+    });
+  }
 
   onDateChange(event: any): void {
+    if(this.linkA == "AGENDA"){
     if (event) {
       this.displayedDate = event.value;
     }
+  }
   }
 }

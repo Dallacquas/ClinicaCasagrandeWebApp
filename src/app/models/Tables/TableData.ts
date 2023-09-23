@@ -1,27 +1,46 @@
 export interface TableData {
   Foto: string;
   Ficha: string;
-  Id?: number;
-  Nome: string;
-  Nascimento: any;
-  Area: string;
   selecionada: boolean;
-  SaiSoz: string;
-  Idade: string;
-  Desde: any;
   Proxses?: any;
-  TelefoneFixo?: string;
-  Celular?: string;
-  TelCom?: string;
-  NomeMae? : string;
-  NomePai? : string;
-  DtIncl? : any;
-  RestrMae? : string;
-  RestrPai? : string;
-  RespFin? : string;
-  Identidade? : string;
-  Endereco? : string;
-  Email? : string;
-  Ativo? : boolean;
+
+  id?: number;
+  nome: string;
+  dtNascim: any;
+  saiSozinho: string;
+  ativo? : boolean;
+  areaSession: string;
+  clienteDesde: any;
+  Idade: string;
+  dtInclusao? : any;
+  respFinanc? : string;
+  identidade? : string;
+  cpf?: string;
+  endereco? : string;
+  email? : string;
+  telFixo?: string;
+  celular?: string;
+  telComercial?: string;
+
+  mae? : string;
+  maeRestric? : string;
+  maeIdentidade? : string;
+  maeCpf?: string;
+  maeEndereco? : string;
+  maeEmail? : string;
+  maeTelFixo?: string;
+  maeCelular?: string;
+  maeTelComercial?: string;
+
+  pai? : string;
+  paiRestric? : string;
+  paiIdentidade? : string;
+  paiCpf?: string;
+  paiEndereco? : string;
+  paiEmail? : string;
+  paiTelFixo?: string;
+  paiCelular?: string;
+  paiTelComercial?: string;
+
 }
 

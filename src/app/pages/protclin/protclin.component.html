@@ -10,10 +10,12 @@
       </div>
       <div class="inferior-e">
         <div class="bloco-antigo" [style.height]="MostraInfo ? '63%' : '100%'">
-
+          <div class="listagem">
+            <app-form-pront></app-form-pront>
+          </div>
         </div>
         <div class="bloco-input" *ngIf="MostraInfo">
-          <app-bloco-notas></app-bloco-notas>
+          <app-bloco-notas #blocoNotas></app-bloco-notas>
         </div>
       </div>
     </div>
@@ -23,7 +25,7 @@
 
       </div>
       <div class="e-foto">
-        <img *ngIf="idFoto !== ''" [src]="this.idFoto" class="id-Foto">
+        <img *ngIf="idFoto !== ''"  class="id-Foto">
       </div>
       <div class="botoes">
         <button class="btnBranco">
@@ -41,29 +43,9 @@
         <button class="btnBranco" [style.color]="MostraInfo ? 'white' : 'black'" [style.background-color]="MostraInfo ? 'var(--cor-media)' : 'white'" (click)="newInfo(MostraInfo)">
           {{MostraInfo ? 'Cancelar nova informação' : 'Inserir nova informação'}}
         </button>
-        <button class="Salvar">
+        <button class="Salvar" (click)="this.blocoNotas.Enviar()">
           Salvar
         </button>
       </div>
     </div>
-
-
-
-
 </div>
-<!--
-    <div class="botaoInfo">
-        <div class="btnBranco">
-          Anexar Documento
-        </div>
-        <!-- <div *ngFor="let botao of botoesInfo" class="botao">
-            <app-meu-botao
-            [texto]="botao.texto"
-            [altura]="botao.altura"
-            [largura]="botao.largura"
-            [cor]="botao.cor">
-            </app-meu-botao>
-        </div>
-          <button class="Salvar" (click)="newInfo(true)">Salvar</button>
-        </div>
-    </div> -->
