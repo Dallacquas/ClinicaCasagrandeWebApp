@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: clinica-webapp
-        image: gcr.io/clinica-399904/clinica-webapp:v1.2
+        image: gcr.io/clinica-399904/clinica-webapp:v1.3
         resources:
           requests:
             memory: "60Mi"
