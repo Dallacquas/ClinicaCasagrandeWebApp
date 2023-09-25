@@ -1,12 +1,12 @@
 export interface Perfil{
 
-  Id: number;
-  Descricao?: string;
-  Help?: string;
-  Dir?: boolean;
-  Secr?: boolean;
-  Coord?: boolean;
-  Equipe?: boolean;
-  SiMesmo?: boolean;
+  id: number;
+  descricao?: string;
+  help: string;
+  dir?: boolean;
+  secr?: boolean;
+  coord?: boolean;
+  equipe?: boolean;
+  siMesmo?: boolean;
 
 }

@@ -4,7 +4,7 @@
       <img [src]="imageLogo" alt="Logo Casagrande" class="logo-header">
      <div class="title-header">{{ headerService.linkAtivo }}</div>
     </div>
-    <div class="Username">{{this.UsrLog}}</div>
+    <div class="Username">{{ this.userService.usuario$ | async }}</div>
     <div class="header-right">
       <img [src]="imageNot" alt="Notificação" class="sino">
       <app-custom-date></app-custom-date>
@@ -43,11 +43,11 @@
             Usuário
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
-            <a class="dropdown-item" >{{this.UsrLog}}</a>
+            <a class="dropdown-item" style="text-align: right;" >{{ this.userService.usuario$ | async }}</a>
             <a class="dropdown-item" routerLink="login" routerLinkActive="active-link">Logoff</a>
             <a class="dropdown-item" href="#">Alterar senha</a>
             <a class="dropdown-item" routerLink="definitions" routerLinkActive="active-link">Definições</a>
-            <a class="dropdown-item" href="#"> ...</a>
+            <a class="dropdown-item" href="#">...</a>
           </div>
         </li>
       </ul>

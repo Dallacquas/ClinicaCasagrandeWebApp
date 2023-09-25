@@ -1,3 +1,4 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { User } from './../../models/user';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
@@ -5,8 +6,10 @@ import { filter } from 'rxjs/operators';
 import { HeaderService } from './header.service';
 import { ClienteService } from 'src/app/services/cliente/cliente.service';
 import { UserService } from '../../services/user.service'; // Importe o UserService aqui
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { LoginComponent } from 'src/app/pages/login/login.component';
+import { NavbarService } from './navbar.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -22,9 +25,11 @@ export class NavbarComponent implements OnInit {
   imageLogo = 'assets/img/CasagrandeLogo.png'; // Caminho relativo à pasta de ativos
   imageNot= 'assets/img/bell-fill.svg';
   dataAtual = new Date;
-  UsrLog: string = 'usuário';
-  UsrLogA!: User;
+  UsrA$!: Observable<string | null>;
+  public usr: string = "(---)";
   public Perf: string = '';
+
+
 
   constructor(
     private clienteService: ClienteService,
@@ -32,8 +37,15 @@ export class NavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public headerService: HeaderService,
     public userService: UserService,
+    public navbarService: NavbarService,
 
-  ) {}
+  ) {
+
+
+  }
+
+
+
 
   ngOnInit(): void {
 
@@ -42,25 +54,35 @@ export class NavbarComponent implements OnInit {
       .subscribe(() => {
         this.atualizarLinkAtivo();
       });
-      this.UsrLogA = this.userService.UsrLogA;
-      if(this.UsrLogA != null){
 
-        if(this.UsrLogA.perfil?.toString() == '0') {
-          this.Perf = 'Diretoria';
+      this.userService.UsrA$.subscribe((novoValor) => {
+       const user = novoValor;
+        let Perf: string = '';
+
+        if(user !== null && user !== undefined){
+          const UsrName = user.name;
+          if(user.perfil?.toString() == '0') {
+            Perf = 'Diretoria';
+            }
+            if(user.perfil?.toString() == '1') {
+              Perf = 'Secretaria';
+            }
+            if(user.perfil?.toString() == '2') {
+              Perf = 'Coordenação';
+            }
+            if(user.perfil?.toString() == '3') {
+              Perf = 'Equipe Clínica';
+            }
+            this.usr = UsrName + ' (' + Perf + ')'
+
           }
-          if(this.UsrLogA.perfil?.toString() == '1') {
-            this.Perf = 'Secretaria';
+          else{
+            this.usr = "(usuário)"
           }
-          if(this.UsrLogA.perfil?.toString() == '2') {
-            this.Perf = 'Coordenação';
-          }
-          if(this.UsrLogA.perfil?.toString() == '3') {
-            this.Perf = 'Equipe Clínica';
-          }
-        this.UsrLog = this.UsrLogA.name + ' (' +  this.Perf + ')';
-      }
+      });
 
   }
+
 
   atualizarLinkAtivo(): void {
     const child = this.activatedRoute.firstChild;
@@ -68,8 +90,8 @@ export class NavbarComponent implements OnInit {
       const snapshot = child.snapshot;
       if (snapshot.data && snapshot.data['title']) {
         this.headerService.linkAtivo = snapshot.data['title'];
+        this.headerService.setLinkA(snapshot.data['title']);
       }
     }
   }
-
 }

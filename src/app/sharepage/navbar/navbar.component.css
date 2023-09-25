@@ -31,13 +31,6 @@
   text-align: right;
 }
 
-.dropdown-menu {
-  color: var(--cor-media);
-  text-align: right;
-  position:fixed;
-  margin-right: 5px;
-}
-
 .header-left {
     float: right;
     display: flex; /* Torna os elementos filhos em um flex container */
@@ -85,7 +78,7 @@
 }
 .navbar-expand-lg{
     margin-bottom:0;
-    border-top: 1px solid black;
+    border-top: 1px solid var(--cor-media);
 }
 .navbar-nav {
     display: flex;
@@ -100,6 +93,16 @@
     margin-right:4vh ;
 }
 .nav-link{
-    font-size: 2vh;
+    font-size: 1.5vh;
 }
 
+
+.dropdown-menu {
+  color: var(--cor-media);
+  text-align: right;
+  position:-ms-page;
+  width: 5vw;
+  right: 20vw;
+  margin-right: 5vw;
+  word-wrap: break-word;
+}

@@ -34,7 +34,18 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
+.fLabel2 {
+  height: 25px;
+  width: 100%;
+  text-align: center;
+  font-size: larger;
+  color: var(--cor-media);
+  font-weight: bolder;
+  margin-right: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: solid 2px var(--cor-clara);
+}
 .fCampo {
   height: 30px;
   width: 75%;

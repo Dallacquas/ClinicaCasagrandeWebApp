@@ -76,4 +76,16 @@
     border-left: 2px solid rgb(252, 233, 249);
     border-right: 2px solid rgb(252, 233, 249);
     padding: 5px;
+    align-items: center;
+  }
+
+  .rosa{
+    align-self: center;
+    width: 95%;
+    margin-left: 1vw;
+    background-color: var(--cor-clara);
+    border-radius: 1vh;
+    border: solid 1px var(--cor-media);
+    border-left: none;
+    border-right: none;
   }

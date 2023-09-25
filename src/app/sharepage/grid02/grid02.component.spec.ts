@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormsEquiComponent } from './forms-equi.component';
+import { Grid02Component } from './grid02.component';
 
-describe('FormsEquiComponent', () => {
-  let component: FormsEquiComponent;
-  let fixture: ComponentFixture<FormsEquiComponent>;
+describe('Grid02Component', () => {
+  let component: Grid02Component;
+  let fixture: ComponentFixture<Grid02Component>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FormsEquiComponent]
+      declarations: [Grid02Component]
     });
-    fixture = TestBed.createComponent(FormsEquiComponent);
+    fixture = TestBed.createComponent(Grid02Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

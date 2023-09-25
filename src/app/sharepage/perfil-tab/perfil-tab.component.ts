@@ -18,38 +18,21 @@ export class PerfilTabComponent implements OnInit{
     this.perfilService.GetPerfil().subscribe(data => {
       const dados = data.dados;
       dados.map((item) => {
-        item.Dir !== null ? item.Dir = item.Dir : item.Dir = false;
-        item.Secr !== null ? item.Secr = item.Secr : item.Secr = false;
-        item.Coord !== null ? item.Coord = item.Coord : item.Coord = false;
+        item.dir !== null ? item.dir = item.dir : item.dir = false;
+        item.secr !== null ? item.secr = item.secr : item.secr = false;
+        item.coord !== null ? item.coord = item.coord : item.coord = false;
       })
       this.perfilService.perfils = data.dados;
-      this.perfilService.perfils.sort((a, b) => a.Id - b.Id);
-      // this.perfil = this.perfilService.perfils; // Aqui, você deve atribuir os dados a this.perfil
-      console.log(this.perfilService.perfils);
-      this.Carregar();
-      console.log(this.perfil);
+      this.perfilService.perfils.sort((a, b) => a.id - b.id);
+
+      this.perfil = this.perfilService.perfils;
     });
 
-    // this.perfilService.PerfilAtual$.subscribe(perfilAtual => {
-    //   this.Atual = perfilAtual;
-    // });
   }
+  exibirHelp(helpTexto: string) {
 
-  Carregar(){
-    for (let i of this.perfilService.perfils) {
-      this.nLin =[{
-        Id: i.Id,
-        Descricao: i.Descricao,
-        Help: i.Help,
-        Dir: i.Dir,
-        Secr: i.Secr,
-        Coord: i.Coord,
-        Equipe: i.Equipe,
-        SiMesmo: i.SiMesmo
-      }];
-      this.perfil = [...this.perfil, ...this.nLin]
-    }
+      this.perfilService.setAjuda(helpTexto);
+
   }
-
 
 }

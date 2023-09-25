@@ -3,3 +3,6 @@
     height: 50vh;
     background-color: rgb(255, 240, 248);
 }
+.modal-inteiro::backdrop{
+    background-color: var(--cor-escura);
+}

@@ -20,12 +20,25 @@ export class HomeComponent implements OnInit {
 
     this.clienteService.setClienteA(0);
   }
-  addBullet() {
+
+  mostrarBotaoSalvar = false;
+
+  onEnter(event: KeyboardEvent): void {
+    this.mostrarBotaoSalvar = true;
+
+  }
+
+  onBlur(): void {
+    this.mostrarBotaoSalvar = false;
+  }
+
+  addBullet(event: any) {
     const cursorPosition = this.getCursorPosition();
     const beforeCursor = this.textoAvisos.substring(0, cursorPosition).trim();
     const afterCursor = this.textoAvisos.substring(cursorPosition).trim();
 
     const linesBeforeCursor = beforeCursor.split('\n');
+
 
     if (linesBeforeCursor.length === 1 && !beforeCursor.startsWith('· ')) {
       // Caso especial: apenas a primeira linha está sendo alterada e ainda não tem um bullet

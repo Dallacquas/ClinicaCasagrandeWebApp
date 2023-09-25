@@ -14,14 +14,14 @@ import { TabResult } from 'src/app/models/Tables/TabResult';
 })
 export class PerfilService {
   public Vazia: Perfil[] = [{
-  Id: 0,
-  Descricao: '',
-  Help: '',
-  Dir: false,
-  Secr: false,
-  Coord: false,
-  Equipe: false,
-  SiMesmo: false
+  id: 0,
+  descricao: '',
+  help: '',
+  dir: false,
+  secr: false,
+  coord: false,
+  equipe: false,
+  siMesmo: false
     }];
   constructor(private http: HttpClient) { }
 
@@ -43,5 +43,9 @@ export class PerfilService {
   setPerfilAtual(name: Perfil) {
     this.PerfilAtual.next(name);
   }
-
+    private Ajuda = new BehaviorSubject<string>('');
+    Ajuda$ = this.Ajuda.asObservable();
+  setAjuda(name: string) {
+    this.Ajuda.next(name);
+}
 }

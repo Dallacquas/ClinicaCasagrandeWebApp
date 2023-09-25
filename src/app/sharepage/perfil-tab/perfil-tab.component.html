@@ -9,13 +9,13 @@
           <th class="c2">Apenas a pessoa</th>
         </thead>
         <tbody class="tabb">
-          <tr *ngFor="let x of this.perfil" class="tabb">
-            <td class="c1">{{x.Id}}-{{x.Descricao}}</td>
-            <td class="c2"><input type="checkbox" [id]="x.Id + 'D'" [checked]="x.Dir"></td>
-            <td class="c2"><input type="checkbox" [id]="x.Id + 'S'" [checked]="x.Secr"></td>
-            <td class="c2"><input type="checkbox" [id]="x.Id + 'C'" [checked]="x.Coord"></td>
-            <td class="c2"><input type="checkbox" [id]="x.Id + 'E'" [checked]="x.Equipe"></td>
-            <td class="c2"><input type="checkbox" [id]="x.Id + 'P'" [checked]="x.SiMesmo"></td>
+          <tr *ngFor="let i of this.perfil" class="tabb">
+            <td class="c1"(mouseenter)="exibirHelp(i.help)">{{i.id}}-{{i.descricao}}</td>
+            <td class="c2"><input type="checkbox" [id]="i.id + 'D'" [checked]="i.dir"></td>
+            <td class="c2"><input type="checkbox" [id]="i.id + 'S'" [checked]="i.secr"></td>
+            <td class="c2"><input type="checkbox" [id]="i.id + 'C'" [checked]="i.coord"></td>
+            <td class="c2"><input type="checkbox" [id]="i.id + 'E'" [checked]="i.equipe"></td>
+            <td class="c2"><input type="checkbox" [id]="i.id + 'P'" [checked]="i.siMesmo"></td>
         </tr>
         </tbody>
       </table>
