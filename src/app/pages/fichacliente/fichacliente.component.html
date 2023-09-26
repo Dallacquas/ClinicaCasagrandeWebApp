@@ -1,6 +1,6 @@
 <div class="linha01">
     <div class="ti-botao">
-        <button class="Rosa" (click)="CliqueNovo()">
+        <button class="Rosa bott" (click)="CliqueNovo()">
             <!-- {{this.selectedFicha}} -->
             NOVO
         </button>
@@ -22,7 +22,7 @@
             <div class="desde">
                 <label *ngIf="this.nCliente>0">Cliente desde {{this.Atual.clienteDesde}}</label>
             </div>
-            <div class="idade">
+            <div class="area">
                 <label *ngIf="this.nCliente>0">Idade: {{this.Atual.Idade}}</label>
             </div>
             <div class="proxses">
@@ -45,18 +45,18 @@
 
         </div>
         <div class="botoes-finais">
-            <div class="btnAnexar">
-                <button class="Branco" id="Anexar" (click)="abrirModal()">
+            <div class="btn">
+                <button class="Branco bott" id="Anexar" (click)="abrirModal()">
                     Anexar Arquivos
                 </button>
             </div>
-            <div class="btnSalvar">
-                <button class="Rosa" id="Salvar" (click)="this.formCliente.submit()">
+            <div class="btnSalvar btn">
+                <button class="Rosa bott" id="Salvar" (click)="this.formCliente.submit()">
                     Salvar
                 </button>
             </div>
-            <div class="btnFechar">
-                <button class="RosaEscuro" id="Cancelar">
+            <div class="btn">
+                <button class="RosaEscuro bott" id="Cancelar">
                   Cancelar
                 </button>
             </div>
