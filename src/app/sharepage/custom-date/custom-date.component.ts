@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderService } from '../navbar/header.service';
+import { HeaderService } from '../navbar/header.service';
 
 @Component({
   selector: 'app-custom-date',
@@ -11,7 +12,14 @@ export class CustomDateComponent implements OnInit {
   semana = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
   linkA!: string;
   constructor(private headerService: HeaderService) {}
+  linkA!: string;
+  constructor(private headerService: HeaderService) {}
 
+  ngOnInit(): void {
+    this.headerService.LinkA$.subscribe(link => {
+      this.linkA = link;
+    });
+  }
   ngOnInit(): void {
     this.headerService.LinkA$.subscribe(link => {
       this.linkA = link;
